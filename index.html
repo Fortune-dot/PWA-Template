@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta name="og:description" content="pwa" />
+    <meta property="og:video:width" content="385" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pwa-template</title>
+    <link rel="manifest" href="./manifest.json" />
+  </head>
+  <style>
+    body {
+      height: 100vh;
+      display: flex;
+      font-family: sans-serif;
+      justify-content: center;
+      align-items: center;
+      background-color: white;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      background-color: white;
+      justify-content: space-around;
+      height: 800px;
+      width: 400px;
+    }
+  </style>
+  <body>
+    <script>
+      window.addEventListener("load", () => {
+        registerSW();
+      });
+
+      //popup to prompt install
+      let deferredPrompt;
+
+      window.addEventListener("beforeinstallprompt", (e) => {
+        deferredPrompt = e;
+      });
+
+      //logic for install buttonInstall
+      const installApp = document.getElementById("installApp");
+
+      installApp.addEventListener("click", async () => {
+        if (deferredPrompt !== null) {
+          deferredPrompt.prompt();
+          const { outcome } = await deferredPrompt.userChoice;
+          if (outcome === "accepted") {
+            deferredPrompt = null;
+          }
+        }
+      });
+      //logic for install buttonInstall
+    </script>
+
+
+
+    <div class="container">
+      <center><h1>Pwa Template</h1></center>
+      <center><p>Made with 💖 by Langat Fortune</p></center>
+    </div>
+
+    
+
+    <script>
+      async function registerSW() {
+        if ("serviceWorker" in navigator) {
+          try {
+            await navigator.serviceWorker.register("./sw.js");
+          } catch (e) {
+            console.log(`SW registration failed`);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
